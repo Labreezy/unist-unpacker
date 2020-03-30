@@ -260,12 +260,16 @@ namespace unistunpacker
             }
 
         }
-        public static void dumpfiles(byte[] listfile)
+        public static void dumpfiles(byte[] listfile, string outtxt = "")
         {
             string workingdir = Directory.GetCurrentDirectory();
 
             filearc newfile = new filearc();
-
+            StreamWriter outwriter = null;
+            if (outtxt != "")
+            {
+                outwriter = File.CreateText(outtxt);
+            }
             using (MemoryStream filestream = new MemoryStream(listfile))
             {
                 using (BinaryReader streamread = new BinaryReader(filestream))
@@ -284,7 +288,10 @@ namespace unistunpacker
                     Console.WriteLine("arcname " + newfile.archivename);
 
                     Console.WriteLine("posis " + streamread.BaseStream.Position);
-
+                    if(outwriter != null)
+                    {
+                        outwriter.WriteLine("Archive name: " + newfile.archivename);
+                    }
 
                     //archivename = streamread.ReadString(24);
 
@@ -312,7 +319,10 @@ namespace unistunpacker
                         //Console.WriteLine("fsize2 " + metadata.size2);
 
                         //Console.WriteLine("fpos " + metadata.pos);
-
+                        if(outwriter != null)
+                        {
+                            outwriter.WriteLine(path);
+                        }
                         Console.WriteLine("fpath "+path);
 
                         Console.WriteLine("lastfpos " + streamread.BaseStream.Position);
@@ -350,7 +360,11 @@ namespace unistunpacker
                     }
                 }
             }
-
+            if (outwriter != null)
+            {
+                outwriter.Close();
+                return;
+            }
             //Console.WriteLine(Path.Combine(workingdir, "d"));
            // File.WriteAllLines(Path.Combine(workingdir, "debugout@"+"test.txt"), br);
             Console.WriteLine(Path.Combine(workingdir, newfile.archivename));

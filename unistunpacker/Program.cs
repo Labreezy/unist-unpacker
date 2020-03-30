@@ -17,6 +17,7 @@ namespace unistunpacker
             string buildfiledir = "";
             string outputdir = "";
             string binfile = "";
+            string outputtxt = "";
             bool pack = false;
             if (args.Length > 0)
             {
@@ -26,6 +27,9 @@ namespace unistunpacker
                     //Console.WriteLine(args.Length+" "+arg);
                     switch (arg)
                     {
+                        case "-list":
+                            outputtxt = @args[i + 1];
+                            break;
                         case "-input":
                             //inputfolders.Add(@args[i + 1]);
                             inputdir = @args[i + 1];
@@ -43,7 +47,7 @@ namespace unistunpacker
                         default:
                             for (int b = 0; b < args.Length; b++)
                             {
-                                meth.dumpfiles(File.ReadAllBytes(args[b]));
+                                meth.dumpfiles(File.ReadAllBytes(args[b]), outtxt: outputtxt);
                             }
                             break;
                     }
